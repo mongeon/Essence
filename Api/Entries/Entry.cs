@@ -12,6 +12,9 @@ public class Entry : BaseModel
     [Column("date")]
     public DateTime Date { get; set; }
 
+    [Column("kilometers")]
+    public int Kilometers { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
 }

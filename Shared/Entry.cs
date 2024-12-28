@@ -9,4 +9,5 @@ public class Entry
     public DateTime Date { get; set; }
 
     public DateTime CreatedAt { get; set; }
+    public int Kilometers { get; set; }
 }
