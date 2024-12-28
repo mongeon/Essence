@@ -1,4 +1,5 @@
 using Api;
+using Api.Entries;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,7 @@ var host = new HostBuilder()
             Key = Environment.GetEnvironmentVariable("SUPABASE_KEY", EnvironmentVariableTarget.Process) ?? string.Empty
         };
         services.AddSingleton(provider => new Supabase.Client(supabaseConfig.Url ?? string.Empty, supabaseConfig.Key ?? string.Empty, options));
+        services.AddScoped<IEntryRepository, EntryRepository>();
     })
     .Build();
 

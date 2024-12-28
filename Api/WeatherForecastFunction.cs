@@ -1,8 +1,8 @@
-using System.Net;
-using BlazorApp.Shared;
+using Essence.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Api
 {
