@@ -19,7 +19,8 @@ namespace Api.Entries
             {
                 Id = entry.Id,
                 Date = entry.Date,
-                CreatedAt = entry.CreatedAt
+                CreatedAt = entry.CreatedAt,
+                Kilometers = entry.Kilometers
             });
 
             await response.WriteAsJsonAsync(entriesDto);
