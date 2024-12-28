@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>Essence.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <AssemblyName>Essence.$(MSBuildProjectName.Replace(" ", "_"))</AssemblyName>
+    <RootNamespace>Essence.$(MSBuildProjectName)</RootNamespace>
+    <AssemblyName>Essence.$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
 
 </Project>
