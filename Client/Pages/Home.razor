@@ -1,7 +1,25 @@
 ﻿@page "/"
+@using Essence.Client.Entries
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@if(entries == null)
+{
+    <p><em>Chargement...</em></p>
+}
+else
+{
+    <EntriesList Entries="entries"/>
+}
+
+@code {
+    [Inject]
+    public required IEntryRepository entryRepository { get; set; }
+    private Entry[]? entries;
+    override protected async Task OnInitializedAsync()
+    {
+        entries = await entryRepository.GetEntries();
+    }
+}
