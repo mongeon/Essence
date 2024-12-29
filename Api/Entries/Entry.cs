@@ -1,7 +1,7 @@
 ﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
-namespace Api.Entries;
+namespace Essence.Api.Entries;
 
 [Table("entries")]
 public class Entry : BaseModel

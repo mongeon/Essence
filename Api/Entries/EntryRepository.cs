@@ -1,4 +1,4 @@
-﻿namespace Api.Entries;
+﻿namespace Essence.Api.Entries;
 public class EntryRepository(Supabase.Client supabaseClient) : IEntryRepository
 {
     public async Task<IEnumerable<Entry>> GetAll()
