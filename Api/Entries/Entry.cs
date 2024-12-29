@@ -15,6 +15,15 @@ public class Entry : BaseModel
     [Column("kilometers")]
     public int Kilometers { get; set; }
 
+    [Column("total_price")]
+    public decimal TotalPrice { get; set; }
+
+    [Column("liters")]
+    public decimal Liters { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
+
+    [Column("notes")]
+    public string Notes { get; set; } = "";
 }
