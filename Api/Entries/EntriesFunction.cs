@@ -3,54 +3,66 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace Api.Entries
+namespace Essence.Api.Entries;
+
+public class EntriesFunction(ILogger<EntriesFunction> logger, IEntryRepository entryRepository)
 {
-    public class EntriesFunction(ILogger<EntriesFunction> logger, IEntryRepository entryRepository)
+    [Function("GetAllEntriesFunction")]
+    public async Task<HttpResponseData> GetAll([HttpTrigger(AuthorizationLevel.Function, "get", Route = "entries")] HttpRequestData req)
     {
-        [Function("GetAllEntriesFunction")]
-        public async Task<HttpResponseData> GetAll([HttpTrigger(AuthorizationLevel.Function, "get", Route = "entries")] HttpRequestData req)
+        logger.LogInformation("Gettting all entries");
+        var entries = await entryRepository.GetAll();
+
+        var response = req.CreateResponse(HttpStatusCode.OK);
+
+        var entriesDto = entries.Select(entry => new Shared.Entry
         {
-            logger.LogInformation("Gettting all entries");
-            var entries = await entryRepository.GetAll();
+            Id = entry.Id,
+            Date = entry.Date,
+            CreatedAt = entry.CreatedAt,
+            Kilometers = entry.Kilometers,
+            Liters = entry.Liters,
+            TotalPrice = entry.TotalPrice,
+            Notes = entry.Notes
+        });
 
-            var response = req.CreateResponse(HttpStatusCode.OK);
+        entriesDto = CalculateConsumption(entriesDto);
 
-            var entriesDto = entries.Select(entry => new Essence.Shared.Entry
-            {
-                Id = entry.Id,
-                Date = entry.Date,
-                CreatedAt = entry.CreatedAt,
-                Kilometers = entry.Kilometers,
-                Liters = entry.Liters,
-                TotalPrice = entry.TotalPrice,
-                Notes = entry.Notes
-            });
+        await response.WriteAsJsonAsync(entriesDto);
 
-            CalculateConsumption(entriesDto);
+        return response;
+    }
 
-            await response.WriteAsJsonAsync(entriesDto);
-
-            return response;
+    private static IEnumerable<Shared.Entry> CalculateConsumption(IEnumerable<Shared.Entry> entriesDto)
+    {
+        // Sort by kilometers, calculate consumption based on the previous entry
+        if (!entriesDto.Any())
+        {
+            return [];
         }
-
-        private static void CalculateConsumption(IEnumerable<Essence.Shared.Entry> entriesDto)
+        if (entriesDto.Count() == 1)
         {
-            // Sort by kilometers, calculate consumption based on the previous entry
-            if (entriesDto.Count() == 1)
+            entriesDto.First().Consumption = 0;
+            return entriesDto;
+        }
+        else
+        {
+            var orderedEntries = entriesDto.OrderBy(entry => entry.Kilometers).ToArray();
+            var previousEntry = orderedEntries.First();
+            previousEntry.Consumption = 0;
+
+            for (int i = 0; i < orderedEntries.Length; i++)
             {
-                entriesDto.First().Consumption = 0;
-            }
-            else
-            {
-                var orderedEntries = entriesDto.OrderBy(entry => entry.Kilometers);
-                var previousEntry = orderedEntries.First();
-                previousEntry.Consumption = 0;
-                foreach (var entry in orderedEntries.Skip(1))
+                var entry = orderedEntries[i];
+                if (i == 0)
                 {
-                    entry.Consumption = (entry.Kilometers - previousEntry.Kilometers) / (entry.Liters - previousEntry.Liters);
-                    previousEntry = entry;
+                    continue;
                 }
+                entry.Consumption = entry.Liters / (entry.Kilometers - previousEntry.Kilometers) * 100;
+                previousEntry = entry;
             }
+
+            return orderedEntries;
         }
     }
 }

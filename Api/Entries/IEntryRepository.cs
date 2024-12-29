@@ -1,4 +1,4 @@
-﻿namespace Api.Entries;
+﻿namespace Essence.Api.Entries;
 
 public interface IEntryRepository
 {
