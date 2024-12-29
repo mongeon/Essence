@@ -1,0 +1,30 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Kilometers</th>
+            <th>Total Price</th>
+            <th>Liters</th>
+            <th>L/100kms</th>
+            <th>$/L</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in Entries)
+        {
+            <tr>
+                <td>@entry.Date.ToShortDateString()</td>
+                <td>@entry.Kilometers.ToString("N0")</td>
+                <td>@entry.TotalPrice.ToString("C2")</td>
+                <td>@entry.Liters.ToString("N3")</td>
+                <td>@entry.Consumption.ToString("N3")</td>
+                <td>@entry.LiterPrice.ToString("C3")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
+}

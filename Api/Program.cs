@@ -1,5 +1,5 @@
-using Api;
-using Api.Entries;
+using Essence.Api;
+using Essence.Api.Entries;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

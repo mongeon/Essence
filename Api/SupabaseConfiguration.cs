@@ -1,4 +1,4 @@
-﻿namespace Api;
+﻿namespace Essence.Api;
 
 public class SupabaseConfiguration
 {

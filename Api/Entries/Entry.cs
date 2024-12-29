@@ -1,7 +1,7 @@
 ﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
-namespace Api.Entries;
+namespace Essence.Api.Entries;
 
 [Table("entries")]
 public class Entry : BaseModel
@@ -12,6 +12,18 @@ public class Entry : BaseModel
     [Column("date")]
     public DateTime Date { get; set; }
 
+    [Column("kilometers")]
+    public int Kilometers { get; set; }
+
+    [Column("total_price")]
+    public decimal TotalPrice { get; set; }
+
+    [Column("liters")]
+    public decimal Liters { get; set; }
+
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
+
+    [Column("notes")]
+    public string Notes { get; set; } = "";
 }
