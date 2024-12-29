@@ -10,4 +10,10 @@ public class Entry
 
     public DateTime CreatedAt { get; set; }
     public int Kilometers { get; set; }
+    public decimal TotalPrice { get; set; }
+    public decimal Liters { get; set; }
+
+    public decimal LiterPrice => TotalPrice / Liters;
+    public decimal Consumption { get; set; }
+    public string Notes { get; set; } = "";
 }

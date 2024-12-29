@@ -20,12 +20,37 @@ namespace Api.Entries
                 Id = entry.Id,
                 Date = entry.Date,
                 CreatedAt = entry.CreatedAt,
-                Kilometers = entry.Kilometers
+                Kilometers = entry.Kilometers,
+                Liters = entry.Liters,
+                TotalPrice = entry.TotalPrice,
+                Notes = entry.Notes
             });
+
+            CalculateConsumption(entriesDto);
 
             await response.WriteAsJsonAsync(entriesDto);
 
             return response;
+        }
+
+        private static void CalculateConsumption(IEnumerable<Essence.Shared.Entry> entriesDto)
+        {
+            // Sort by kilometers, calculate consumption based on the previous entry
+            if (entriesDto.Count() == 1)
+            {
+                entriesDto.First().Consumption = 0;
+            }
+            else
+            {
+                var orderedEntries = entriesDto.OrderBy(entry => entry.Kilometers);
+                var previousEntry = orderedEntries.First();
+                previousEntry.Consumption = 0;
+                foreach (var entry in orderedEntries.Skip(1))
+                {
+                    entry.Consumption = (entry.Kilometers - previousEntry.Kilometers) / (entry.Liters - previousEntry.Liters);
+                    previousEntry = entry;
+                }
+            }
         }
     }
 }
