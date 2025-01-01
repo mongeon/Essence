@@ -1,30 +1,25 @@
-﻿<table class="table">
-    <thead>
-        <tr>
-            <th>Supplier</th>
-            <th>Date</th>
-            <th>Kilometers</th>
-            <th>Total Price</th>
-            <th>Liters</th>
-            <th>L/100kms</th>
-            <th>$/L</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var entry in Entries)
-        {
-            <tr>
-                <td>@entry.Supplier.Name</td>
-                <td>@entry.Date.ToShortDateString()</td>
-                <td>@entry.Kilometers.ToString("N0")</td>
-                <td>@entry.TotalPrice.ToString("C2")</td>
-                <td>@entry.Liters.ToString("N3")</td>
-                <td>@entry.Consumption.ToString("N3")</td>
-                <td>@entry.LiterPrice.ToString("C3")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+﻿<MudTable Items="@Entries" >
+    <HeaderContent>
+
+        <MudTh>Supplier</MudTh>
+        <MudTh>Date</MudTh>
+        <MudTh>Kilometers</MudTh>
+        <MudTh>Total Price</MudTh>
+        <MudTh>Liters</MudTh>
+        <MudTh>L/100kms</MudTh>
+        <MudTh>$/L</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Supplier.Name</MudTd>
+        <MudTd>@context.Date.ToShortDateString()</MudTd>
+        <MudTd>@context.Kilometers.ToString("N0")</MudTd>
+        <MudTd>@context.TotalPrice.ToString("C2")</MudTd>
+        <MudTd>@context.Liters.ToString("N3")</MudTd>
+        <MudTd>@context.Consumption.ToString("N3")</MudTd>
+        <MudTd>@context.LiterPrice.ToString("C3")</MudTd>
+    </RowTemplate>
+</MudTable>
 
 @code {
     [Parameter]
