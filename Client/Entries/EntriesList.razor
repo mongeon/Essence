@@ -1,6 +1,7 @@
 ﻿<table class="table">
     <thead>
         <tr>
+            <th>Supplier</th>
             <th>Date</th>
             <th>Kilometers</th>
             <th>Total Price</th>
@@ -13,6 +14,7 @@
         @foreach (var entry in Entries)
         {
             <tr>
+                <td>@entry.Supplier.Name</td>
                 <td>@entry.Date.ToShortDateString()</td>
                 <td>@entry.Kilometers.ToString("N0")</td>
                 <td>@entry.TotalPrice.ToString("C2")</td>

@@ -23,7 +23,14 @@ public class EntriesFunction(ILogger<EntriesFunction> logger, IEntryRepository e
             Kilometers = entry.Kilometers,
             Liters = entry.Liters,
             TotalPrice = entry.TotalPrice,
-            Notes = entry.Notes
+            Notes = entry.Notes,
+            Supplier = new Shared.Supplier
+            {
+                Id = entry.Supplier.Id,
+                Name = entry.Supplier.Name,
+                CreatedAt = entry.Supplier.CreatedAt,
+            }
+
         });
 
         entriesDto = CalculateConsumption(entriesDto);

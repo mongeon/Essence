@@ -1,0 +1,9 @@
+﻿<PageTitle>@ChildContent | @Suffix</PageTitle>
+
+@code {
+    [Parameter]
+    public string Suffix { get; set; } = "Essence";
+
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+}
