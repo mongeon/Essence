@@ -2,13 +2,9 @@
 
 namespace Essence.Shared;
 
-public class Entry
+public record Entry : BaseEntity
 {
-    public int Id { get; set; }
-
     public DateTime Date { get; set; }
-
-    public DateTime CreatedAt { get; set; }
     public int Kilometers { get; set; }
     public decimal TotalPrice { get; set; }
     public decimal Liters { get; set; }
@@ -16,4 +12,6 @@ public class Entry
     public decimal LiterPrice => TotalPrice / Liters;
     public decimal Consumption { get; set; }
     public string Notes { get; set; } = "";
+
+    public Supplier Supplier { get; set; } = null!;
 }

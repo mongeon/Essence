@@ -1,14 +1,11 @@
-﻿using Supabase.Postgrest.Attributes;
-using Supabase.Postgrest.Models;
+﻿using Essence.Api.Suppliers;
+using Supabase.Postgrest.Attributes;
 
 namespace Essence.Api.Entries;
 
 [Table("entries")]
-public class Entry : BaseModel
+public class Entry : SupaBaseEntity
 {
-    [PrimaryKey("id")]
-    public int Id { get; set; }
-
     [Column("date")]
     public DateTime Date { get; set; }
 
@@ -21,9 +18,9 @@ public class Entry : BaseModel
     [Column("liters")]
     public decimal Liters { get; set; }
 
-    [Column("created_at")]
-    public DateTime CreatedAt { get; set; }
-
     [Column("notes")]
     public string Notes { get; set; } = "";
+
+    [Reference(typeof(Supplier), includeInQuery: true)]
+    public Supplier Supplier { get; set; } = null!;
 }
