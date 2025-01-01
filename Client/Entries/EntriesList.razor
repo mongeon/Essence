@@ -1,13 +1,12 @@
-﻿<MudTable Items="@Entries" >
+﻿<MudTable Items="@Entries" SortLabel="Sort By">
     <HeaderContent>
-
-        <MudTh>Supplier</MudTh>
-        <MudTh>Date</MudTh>
-        <MudTh>Kilometers</MudTh>
-        <MudTh>Total Price</MudTh>
-        <MudTh>Liters</MudTh>
-        <MudTh>L/100kms</MudTh>
-        <MudTh>$/L</MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Supplier.Name)">Supplier</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Kilometers)" InitialDirection="SortDirection.Ascending">Kilometers</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.TotalPrice)">Total Price</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Liters)">Liters</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Consumption)">L/100kms</MudTableSortLabel></MudTh>
+        <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.LiterPrice)">$/L</MudTableSortLabel></MudTh>
 
     </HeaderContent>
     <RowTemplate>
