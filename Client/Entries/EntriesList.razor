@@ -18,6 +18,10 @@
         <MudTd>@context.Consumption.ToString("N3")</MudTd>
         <MudTd>@context.LiterPrice.ToString("C3")</MudTd>
     </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }"
+                       AllItemsText="All" />
+    </PagerContent>
 </MudTable>
 
 @code {
