@@ -1,0 +1,21 @@
+﻿<MudChart ChartSeries="@_series" ChartType="ChartType.Line" ChartOptions="@_options"/>
+
+@code {
+    [Parameter]
+    public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
+    private List­<ChartSeries> _series = new List­<ChartSeries>();
+    private readonly ChartOptions _options = new();
+
+    protected override void OnInitialized()
+    {
+
+        _series.AddRange(
+            new ChartSeries() { Name = "L/100 km", Data = Entries.Skip(1).Select(x => Convert.ToDouble(x.Consumption)).ToArray() },
+            new ChartSeries() { Name = "$/L", Data = Entries.Skip(1).Select(x => Convert.ToDouble(x.LiterPrice)).ToArray() }
+        );
+        _options.InterpolationOption = InterpolationOption.NaturalSpline;
+        _options.YAxisFormat = "c2";
+
+        StateHasChanged();
+    }
+}
