@@ -1,24 +1,69 @@
-﻿<MudChart ChartSeries="@_series" ChartType="ChartType.Line" ChartOptions="@_options" XAxisLabels="@_xAxisLabels" />
+﻿@using ApexCharts
+<ApexChart TItem="Entry"
+XAxisType="XAxisType.Datetime"
+Height="400"
+Options="options">
 
+    <ApexPointSeries TItem="Entry"
+    Items="Entries"
+    Name="Consumption"
+    SeriesType="SeriesType.Line"
+    XValue="e => e.Date"
+    YValue="e=> e.Consumption" />
+
+    <ApexPointSeries TItem="Entry"
+    Items="Entries"
+    Name="Price"
+    SeriesType="SeriesType.Line"
+    XValue="e => e.Date"
+    YValue="e=> e.LiterPrice" />
+</ApexChart>
 @code {
     [Parameter]
     public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
-    private List­<ChartSeries> _series = new List­<ChartSeries>();
-    private readonly ChartOptions _options = new();
-    private string[] _xAxisLabels;
+    [Parameter]
+    public int Height { get; set; }
+
+    private ApexChartOptions<Entry> options = new ApexCharts.ApexChartOptions<Entry>();
 
     protected override void OnInitialized()
     {
+        options.Xaxis = new XAxis
+            {
+                Title = new AxisTitle
+                {
+                    OffsetY = 5,
+                    Text = "Month",
+                    Style = new AxisTitleStyle { FontSize = "14px"}
+                },
+                AxisBorder = new AxisBorder { Height = 2 }
+            };
+        options.Yaxis = new List<YAxis>();
+        options.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "L/100km" },
+                DecimalsInFloat = 2,
+                SeriesName = "Consumption"
+            });
+        options.Yaxis.Add(new YAxis
+            {
+                Title = new AxisTitle { Text = "$/L" },
+                DecimalsInFloat = 3,
+                Opposite = true,
+                SeriesName = "Price"
+            });
 
-        _series.AddRange(
-            new ChartSeries() { Name = "L/100 km", Data = Entries.Skip(1).Select(x => Convert.ToDouble(x.Consumption)).ToArray() },
-            new ChartSeries() { Name = "$/L", Data = Entries.Skip(1).Select(x => Convert.ToDouble(x.LiterPrice)).ToArray() }
-        );
-        _options.InterpolationOption = InterpolationOption.NaturalSpline;
-        _options.YAxisFormat = "c2";
-        _xAxisLabels = Entries.Skip(1).Select(x => x.Date.ToShortDateString()).ToArray();
+        options.Stroke = new Stroke { Curve = Curve.Smooth };
+        options.Chart.Toolbar = new Toolbar { Show = false };
+        options.Chart.Zoom = new Zoom { Enabled = false };
 
-
-        StateHasChanged();
+        options.Legend = new Legend
+            {
+                Position = LegendPosition.Top,
+                HorizontalAlign = ApexCharts.Align.Right,
+                Floating = true,
+                OffsetX = -5,
+                OffsetY = -25
+            };
     }
 }
