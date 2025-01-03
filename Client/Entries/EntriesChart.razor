@@ -1,10 +1,11 @@
-﻿<MudChart ChartSeries="@_series" ChartType="ChartType.Line" ChartOptions="@_options"/>
+﻿<MudChart ChartSeries="@_series" ChartType="ChartType.Line" ChartOptions="@_options" XAxisLabels="@_xAxisLabels" />
 
 @code {
     [Parameter]
     public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
     private List­<ChartSeries> _series = new List­<ChartSeries>();
     private readonly ChartOptions _options = new();
+    private string[] _xAxisLabels;
 
     protected override void OnInitialized()
     {
@@ -15,6 +16,8 @@
         );
         _options.InterpolationOption = InterpolationOption.NaturalSpline;
         _options.YAxisFormat = "c2";
+        _xAxisLabels = Entries.Skip(1).Select(x => x.Date.ToShortDateString()).ToArray();
+
 
         StateHasChanged();
     }
