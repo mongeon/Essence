@@ -1,0 +1,19 @@
+﻿<MudStack Row="true" Justify="Justify.Center" Class="pa-3">
+    <MudPaper Class="pa-3 mud-theme-info">Average Price = @TotalPriceAverage.ToString("C2")</MudPaper>
+    <MudPaper Class="pa-3 mud-theme-info">Average Liters = @AverageLiters.ToString("N3")</MudPaper>
+    <MudPaper Class="pa-3 mud-theme-info">Average Liter Price = @AverageLiterPrice.ToString("C3")</MudPaper>
+    <MudPaper Class="pa-3 mud-theme-info">Average Consumption = @AverageConsumption.ToString("N3")</MudPaper>
+    <MudPaper Class="pa-3 mud-theme-info">Total Fill Ups = @TotalFillUps</MudPaper>
+</MudStack>
+
+
+@code {
+    [Parameter]
+    public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
+
+    private decimal TotalPriceAverage { get { return Entries?.Average(e => e.TotalPrice) ?? 0; } }
+    private decimal AverageLiters { get { return Entries?.Average(e => e.Liters) ?? 0; } }
+    private decimal AverageLiterPrice { get { return Entries?.Average(e => e.LiterPrice) ?? 0; } }
+    private decimal AverageConsumption { get { return Entries?.Average(e => e.Consumption) ?? 0; } }
+    private int TotalFillUps { get { return Entries?.Count() ?? 0; } }
+}
