@@ -8,23 +8,9 @@
     <p><em>Chargement...</em></p>
 }
 else
-{
-    <div>
-        Average Price = @TotalPriceAverage.ToString("C2")
-    </div>
-    <div>
-        Average Liters = @AverageLiters.ToString("N3")
-    </div>
-    <div>
-        Average Liter Price = @AverageLiterPrice.ToString("C3")
-    </div>
-    <div>
-        Average Consumption = @AverageConsumption.ToString("N3")
-    </div>
-    <div>
-        Total Fill Ups = @TotalFillUps
-    </div>
-    <EntriesChart Entries="entries.Skip(1)" Height="350" />
+{   
+    <EntriesSummary Entries="entries.Skip(1)"/>
+    <EntriesChart Entries="entries" Height="350" />
     <EntriesList Entries="entries" />
 }
 
@@ -33,12 +19,6 @@ else
     public required IEntryRepository entryRepository { get; set; }
 
     private Entry[]? entries;
-
-    private decimal TotalPriceAverage { get { return entries?.Skip(1).Average(e => e.TotalPrice) ?? 0; } }
-    private decimal AverageLiters { get { return entries?.Skip(1).Average(e => e.Liters) ?? 0; } }
-    private decimal AverageLiterPrice { get { return entries?.Skip(1).Average(e => e.LiterPrice) ?? 0; } }
-    private decimal AverageConsumption { get { return entries?.Skip(1).Average(e => e.Consumption) ?? 0; } }
-    private int TotalFillUps { get { return entries?.Skip(1).Count() ?? 0; } }
 
     override protected async Task OnInitializedAsync()
     {
