@@ -1,8 +1,9 @@
 ﻿@using ApexCharts
+
 <ApexChart TItem="Entry"
 XAxisType="XAxisType.Datetime"
 Height="400"
-Options="options">
+Options="_options">
 
     <ApexPointSeries TItem="Entry"
     Items="Entries"
@@ -23,12 +24,22 @@ Options="options">
     public IEnumerable<Entry> Entries { get; set; } = new List<Entry>();
     [Parameter]
     public int Height { get; set; }
+    [CascadingParameter]
+    protected MudThemeProvider _mudThemeProvider { get; set; }
 
-    private ApexChartOptions<Entry> options = new ApexCharts.ApexChartOptions<Entry>();
+    private ApexChartOptions<Entry> _options = new ApexCharts.ApexChartOptions<Entry>();
 
     protected override void OnInitialized()
     {
-        options.Xaxis = new XAxis
+        if (_mudThemeProvider.IsDarkMode)
+        {
+            _options.Theme = new Theme { Mode = Mode.Dark };
+        }
+        else
+        {
+            _options.Theme = new Theme { Mode = Mode.Light };
+        }
+        _options.Xaxis = new XAxis
             {
                 Title = new AxisTitle
                 {
@@ -38,14 +49,14 @@ Options="options">
                 },
                 AxisBorder = new AxisBorder { Height = 2 }
             };
-        options.Yaxis = new List<YAxis>();
-        options.Yaxis.Add(new YAxis
+        _options.Yaxis = new List<YAxis>();
+        _options.Yaxis.Add(new YAxis
             {
                 Title = new AxisTitle { Text = "L/100km" },
                 DecimalsInFloat = 2,
                 SeriesName = "Consumption"
             });
-        options.Yaxis.Add(new YAxis
+        _options.Yaxis.Add(new YAxis
             {
                 Title = new AxisTitle { Text = "$/L" },
                 DecimalsInFloat = 3,
@@ -53,11 +64,11 @@ Options="options">
                 SeriesName = "Price"
             });
 
-        options.Stroke = new Stroke { Curve = Curve.Smooth };
-        options.Chart.Toolbar = new Toolbar { Show = false };
-        options.Chart.Zoom = new Zoom { Enabled = false };
-
-        options.Legend = new Legend
+        _options.Stroke = new Stroke { Curve = Curve.Smooth };
+        _options.Chart.Toolbar = new Toolbar { Show = false };
+        _options.Chart.Zoom = new Zoom { Enabled = false };
+        
+        _options.Legend = new Legend
             {
                 Position = LegendPosition.Top,
                 HorizontalAlign = ApexCharts.Align.Right,
