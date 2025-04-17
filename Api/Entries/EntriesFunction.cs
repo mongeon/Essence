@@ -40,6 +40,36 @@ public class EntriesFunction(ILogger<EntriesFunction> logger, IEntryRepository e
         return response;
     }
 
+    [Function("AddEntryFunction")]
+    public async Task<HttpResponseData> Add([HttpTrigger(AuthorizationLevel.Function, "post", Route = "entries")] HttpRequestData req)
+    {
+        var entryDto = await req.ReadFromJsonAsync<Shared.Entry>();
+        if (entryDto == null)
+        {
+            var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+            await badRequest.WriteStringAsync("Invalid entry data");
+            return badRequest;
+        }
+        var entry = new Entry
+        {
+            Date = entryDto.Date,
+            Kilometers = entryDto.Kilometers,
+            Liters = entryDto.Liters,
+            TotalPrice = entryDto.TotalPrice,
+            Notes = entryDto.Notes,
+            Supplier = new Suppliers.Supplier
+            {
+                Id = entryDto.Supplier.Id,
+                Name = entryDto.Supplier.Name,
+                CreatedAt = entryDto.Supplier.CreatedAt
+            }
+        };
+        await entryRepository.Add(entry);
+        var response = req.CreateResponse(HttpStatusCode.Created);
+        await response.WriteAsJsonAsync(entryDto);
+        return response;
+    }
+
     private static IEnumerable<Shared.Entry> CalculateConsumption(IEnumerable<Shared.Entry> entriesDto)
     {
         // Sort by kilometers, calculate consumption based on the previous entry

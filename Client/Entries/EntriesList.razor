@@ -1,4 +1,6 @@
-﻿<MudTable Items="@Entries" SortLabel="Sort By">
+﻿<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/entries/create">Add New Entry</MudButton>
+
+<MudTable Items="@Entries" SortLabel="Sort By">
     <HeaderContent>
         <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Supplier.Name)">Supplier</MudTableSortLabel></MudTh>
         <MudTh> <MudTableSortLabel SortBy="new Func<Entry, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>

@@ -8,4 +8,9 @@ public class EntryRepository(Supabase.Client supabaseClient) : IEntryRepository
             .Get();
         return response.Models;
     }
+
+    public async Task Add(Entry entry)
+    {
+        await supabaseClient.From<Entry>().Insert(entry);
+    }
 }

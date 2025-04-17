@@ -1,0 +1,58 @@
+@page "/entries/create"
+@using Essence.Shared
+@inject NavigationManager Navigation
+@inject IEntryRepository EntryRepository
+
+<MudPaper Class="pa-4" Width="400px" Style="margin:auto;">
+    <MudForm @ref="form" Model="entry" Validated="OnValidSubmit">
+        <MudText Typo="Typo.h6">Add New Entry</MudText>
+        <MudDatePicker @bind-Date="entry.Date" Label="Date" Required="true" />
+        <MudTextField @bind-Value="entry.Kilometers" Label="Kilometers" Required="true" Type="number" />
+        <MudTextField @bind-Value="entry.TotalPrice" Label="Total Price" Required="true" Type="number" />
+        <MudTextField @bind-Value="entry.Liters" Label="Liters" Required="true" Type="number" />
+        <MudTextField @bind-Value="entry.Consumption" Label="Consumption (L/100km)" Required="true" Type="number" />
+        <MudTextField @bind-Value="entry.Notes" Label="Notes" />
+        <MudSelect T="Supplier" @bind-Value="selectedSupplier" Label="Supplier" Required="true">
+            @if (suppliers != null)
+            {
+                @foreach (var supplier in suppliers)
+                {
+                    <MudSelectItem T="Supplier" Value="@supplier">@supplier.Name</MudSelectItem>
+                }
+            }
+        </MudSelect>
+        <MudButton OnClick="Submit" Disabled="@(form is not null && !form.IsValid)" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+        <MudButton OnClick="@(() => Navigation.NavigateTo("/entries"))" Variant="Variant.Text">Cancel</MudButton>
+    </MudForm>
+</MudPaper>
+
+@code {
+    private Entry entry = new();
+    private MudForm? form;
+    private Supplier[]? suppliers;
+    private Supplier? selectedSupplier;
+
+    protected override async Task OnInitializedAsync()
+    {
+        suppliers = await EntryRepository.GetSuppliers();
+    }
+
+    private async Task Submit()
+    {
+        if (form is not null)
+        {
+            await form.Validate();
+            if (form.IsValid && selectedSupplier != null)
+            {
+                entry.Supplier = selectedSupplier;
+                await EntryRepository.AddEntry(entry);
+                Navigation.NavigateTo("/entries");
+            }
+        }
+    }
+
+    private void OnValidSubmit()
+    {
+        // Optionally handle form validation event
+    }
+}
